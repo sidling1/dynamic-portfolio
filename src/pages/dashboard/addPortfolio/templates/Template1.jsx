@@ -95,6 +95,48 @@ const Template1 = () => {
     navigate(`/dashboard`);
   };
 
+  const Preview = (e)=>{
+    e.preventDefault();
+
+    toast("Please Wait! while we are adding...");
+    const userID = localStorage.getItem("dynamic-id");
+
+    const formData = new FormData();
+    const body = {
+      userID: userID,
+      name: data.name,
+      headerTitle: data.headerTitle,
+      resumeLink: data.resumeLink,
+      template: "template1",
+      about: data.about,
+      skills: selectedSkills,
+      exp: experiences,
+      projects: projects,
+      socialLinks: socialLinks,
+      theme: data.themes,
+      font: data.fontfamily,
+    };
+    console.log(body);
+    if(file)formData.append("image", file);
+
+    apiCommon.post(body, "portfolio", true).then((res) => {
+      // console.log(res.id);
+      if (res.status === "200") {
+        apiCommon
+          .putFormData(formData, `portfolio/${res.id}`, true)
+          .then((res) => {
+            // console.log(res);
+            if (res.status === "200") {
+              toast.success("Portfolio added !");
+            }
+          });
+      } else {
+        toast.error("Portfolio addition failed !");
+      }
+    });
+    navigate(`/portfolio/`);
+  }
+
   return (
     <React.Fragment>
       <form onSubmit={onSubmit}>
@@ -183,8 +225,10 @@ const Template1 = () => {
             </div>
           ))}
         </div> */}
-
         <div className="text-right mt-5 mb-4">
+          <button type="button" className="btn btn-primary" onClick={Preview}>
+            Preview
+          </button>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>

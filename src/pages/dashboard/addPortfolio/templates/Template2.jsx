@@ -94,6 +94,9 @@ const Template2 = () => {
         />
         <PhotoGallery photoLinks={photoLinks} setPhotoLinks={setPhotoLinks} />
         <div className="text-right mt-5 mb-4">
+          <button type="button" className="btn btn-primary">
+            Preview
+          </button>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
