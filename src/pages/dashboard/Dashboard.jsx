@@ -8,6 +8,8 @@ import { TemplateContext } from "../../context/TemplateContext";
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { Pattern1Default } from "../../components/common/CustomPatterns";
 import { RWebShare } from "react-web-share";
+import CustModal from "../../components/layout/CustModal";
+import useCustModal from "../../services/useCustModal";
 
 const Dashboard = () => {
   const name = localStorage.getItem("dynamic-name");
@@ -87,7 +89,10 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-const PortfolioCard = ({ item, delPortfolio }) => (
+const PortfolioCard = ({ item, delPortfolio }) => {
+  const {isShowing, toggle} = useCustModal();
+  
+  return (
   <Card className="ms-0 pointer-cursor d-flex justify-content-center align-items-center bg-transparent border-0">
     <Card.Body className="bg-white w-100">
       <Link
@@ -132,13 +137,18 @@ const PortfolioCard = ({ item, delPortfolio }) => (
       <button
         className="btn btn-danger"
         title="Delete Portfolio"
-        onClick={() => delPortfolio(item._id)}
+        onClick={()=>toggle()}
       >
         <FaTrash />
       </button>
     </Card.Footer>
+    <CustModal
+    isShowing={isShowing}
+    hide={toggle}
+    />
   </Card>
-);
+
+)};
 
 const AddPortfolioModal = ({ show, setShow }) => {
   const [templates] = useContext(TemplateContext);
